@@ -45,6 +45,7 @@ class Api::V1::RewardsController < ApplicationController
   def set_reward
     @reward = model_class.find_by(id: params[:id])
     return if @reward
+
     render json: { errors: 'Reward not found' }, status: :not_found
   end
 end
