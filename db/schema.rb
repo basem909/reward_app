@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_09_030129) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_09_034408) do
+  create_table "redemptions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "reward_id", null: false
+    t.integer "discounted_points", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reward_id"], name: "index_redemptions_on_reward_id"
+    t.index ["user_id"], name: "index_redemptions_on_user_id"
+  end
+
   create_table "rewards", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -32,4 +42,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_09_030129) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "redemptions", "rewards"
+  add_foreign_key "redemptions", "users"
 end
