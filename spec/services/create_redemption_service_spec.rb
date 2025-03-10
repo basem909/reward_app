@@ -2,12 +2,13 @@ require 'rails_helper'
 
 RSpec.describe CreateRedemptionService, type: :service do
   let(:reward_cost) { 100 }
-  let(:reward) { Reward.create!(title: "Test Reward", description: "Sample description", points_cost: reward_cost) }
+  let(:reward) { Reward.create!(title: 'Test Reward', description: 'Sample description', points_cost: reward_cost) }
 
   describe '#call' do
     context 'when the user does not have enough points' do
       before do
-        @user = User.create!(email: "low@example.com", password: "password", password_confirmation: "password", points: 50, jti: SecureRandom.uuid)
+        @user = User.create!(email: 'low@example.com', password: 'password', password_confirmation: 'password',
+                             points: 50, jti: SecureRandom.uuid)
       end
 
       subject { described_class.new(@user, reward).call }
@@ -21,7 +22,8 @@ RSpec.describe CreateRedemptionService, type: :service do
 
     context 'when the user has enough points' do
       before do
-        @user = User.create!(email: "enough@example.com", password: "password", password_confirmation: "password", points: 150, jti: SecureRandom.uuid)
+        @user = User.create!(email: 'enough@example.com', password: 'password', password_confirmation: 'password',
+                             points: 150, jti: SecureRandom.uuid)
       end
 
       subject { described_class.new(@user, reward).call }
@@ -42,7 +44,8 @@ RSpec.describe CreateRedemptionService, type: :service do
 
     context 'when a record invalid error is raised during creation' do
       before do
-        @user = User.create!(email: "error@example.com", password: "password", password_confirmation: "password", points: 150, jti: SecureRandom.uuid)
+        @user = User.create!(email: 'error@example.com', password: 'password', password_confirmation: 'password',
+                             points: 150, jti: SecureRandom.uuid)
       end
 
       subject { described_class.new(@user, reward) }

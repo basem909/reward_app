@@ -43,14 +43,15 @@ module Api
 
       def extract_date_params
         if params[:from_date].present?
-          from_date_str = params[:from_date].gsub(/\s+/, '') # removes extra spaces, e.g. "01- 03 - 2025" -> "01-03-2025"
-          @from_date = Date.strptime(from_date_str, '%d-%m-%Y').strftime('%Y-%m-%d')
+          from_date_str = params[:from_date].gsub(/\s+/, '')
+          @from_date = Date.strptime(from_date_str, '%d-%m-%Y')
         end
 
         return unless params[:to_date].present?
 
         to_date_str = params[:to_date].gsub(/\s+/, '')
-        @to_date = Date.strptime(to_date_str, '%d-%m-%Y').strftime('%Y-%m-%d')
+        # Use end_of_day so that the entire day is covered
+        @to_date = Date.strptime(to_date_str, '%d-%m-%Y').end_of_day
       end
 
       def redemption_params
@@ -59,15 +60,16 @@ module Api
 
       def set_reward
         @reward = Reward.find_by(id: redemption_params[:reward_id])
-        render json: { success: false, data: nil, errors: ['Reward not found'] }, status: :not_found unless @reward
+        return if @reward
+
+        render json: { success: false, data: nil, errors: ['Reward not found'] }, status: :not_found and return
       end
 
       def set_redemption
         @redemption = current_user.redemptions.find_by(id: params[:id])
         return if @redemption
 
-        render json: { success: false, data: nil, errors: ['Redemption not found'] },
-               status: :not_found
+        render json: { success: false, data: nil, errors: ['Redemption not found'] }, status: :not_found and return
       end
     end
   end
