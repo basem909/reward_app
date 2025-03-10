@@ -55,6 +55,6 @@ class Api::V1::RewardsController < ApplicationController
   end
 
   def collection_formatter(rewards)
-    rewards.map(&:format_reward)
+    rewards.map(&:reward_formatter)
   end
 end

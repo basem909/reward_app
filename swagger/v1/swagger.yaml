@@ -1,0 +1,386 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+paths:
+  "/api/v1/redemptions":
+    get:
+      summary: Lists redemptions for the current user
+      tags:
+      - Redemptions
+      description: Retrieves redemptions for the current user with optional date filters
+      parameters:
+      - name: from_date
+        in: query
+        format: date
+        description: Filter redemptions from this date
+        schema:
+          type: string
+      - name: to_date
+        in: query
+        format: date
+        description: Filter redemptions up to this date
+        schema:
+          type: string
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Redemptions retrieved
+    post:
+      summary: Creates a redemption
+      tags:
+      - Redemptions
+      description: Creates a new redemption for the current user
+      parameters: []
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Redemption created
+        '422':
+          description: Unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reward_id:
+                  type: integer
+              required:
+              - reward_id
+  "/api/v1/redemptions/{id}":
+    delete:
+      summary: Deletes a redemption
+      tags:
+      - Redemptions
+      description: Deletes a redemption for the current user
+      parameters:
+      - name: id
+        in: path
+        description: Redemption ID
+        required: true
+        schema:
+          type: integer
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: Redemption deleted
+        '404':
+          description: Redemption not found
+  "/api/v1/rewards":
+    get:
+      summary: Lists rewards
+      tags:
+      - Rewards
+      description: Retrieves all rewards
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Rewards retrieved
+    post:
+      summary: Creates a reward
+      tags:
+      - Rewards
+      description: Creates a new reward (Admin only)
+      parameters: []
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Reward created
+        '422':
+          description: Unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                points_cost:
+                  type: integer
+              required:
+              - title
+              - points_cost
+  "/api/v1/rewards/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Reward ID
+      required: true
+      schema:
+        type: integer
+    patch:
+      summary: Updates a reward
+      tags:
+      - Rewards
+      description: Updates an existing reward (Admin only)
+      parameters: []
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Reward updated
+        '422':
+          description: Unprocessable entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                points_cost:
+                  type: integer
+    delete:
+      summary: Deletes a reward
+      tags:
+      - Rewards
+      description: Deletes a reward (Admin only)
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: Reward deleted
+        '404':
+          description: Reward not found
+  "/api/v1/users/me/points":
+    get:
+      summary: Retrieves current user points
+      tags:
+      - Users
+      description: Returns the points balance for the authenticated user
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Points retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  points:
+                    type: integer
+                required:
+                - points
+        '401':
+          description: Unauthorized
+  "/api/v1/users/update_user_points":
+    patch:
+      summary: Updates user points (Admin only)
+      tags:
+      - Users
+      description: Updates the points for a specific user. Requires admin privileges.
+      parameters:
+      - name: points
+        in: query
+        description: New points value
+        schema:
+          type: integer
+      - name: user_id
+        in: query
+        description: User's id
+        schema:
+          type: integer
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: User points updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                required:
+                - message
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
+        '401':
+          description: Unauthorized
+  "/users":
+    post:
+      summary: Registers a new user (sign up)
+      tags:
+      - Authentication
+      description: Registers a new user and returns the created user object.
+      parameters: []
+      responses:
+        '201':
+          description: User registered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: newuser@example.com
+                    required:
+                    - id
+                    - email
+                required:
+                - data
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: newuser@example.com
+                    password:
+                      type: string
+                      format: password
+                      example: password
+                    password_confirmation:
+                      type: string
+                      format: password
+                      example: password
+                  required:
+                  - email
+                  - password
+                  - password_confirmation
+              required:
+              - user
+  "/users/sign_in":
+    post:
+      summary: Signs in a user
+      tags:
+      - Authentication
+      description: Signs in a user and returns a JWT in the Authorization header.
+      parameters: []
+      responses:
+        '200':
+          description: User signed in
+          headers:
+            Authorization:
+              schema:
+                type: string
+                description: JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      email:
+                        type: string
+                        example: newuser@example.com
+                    required:
+                    - id
+                    - email
+                required:
+                - data
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+                required:
+                - errors
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                      example: newuser@example.com
+                    password:
+                      type: string
+                      format: password
+                      example: password
+                  required:
+                  - email
+                  - password
+              required:
+              - user
+  "/users/sign_out":
+    delete:
+      summary: Signs out a user
+      tags:
+      - Authentication
+      description: Signs out a user, revoking the JWT. Requires a valid JWT token.
+      security:
+      - bearerAuth: []
+      responses:
+        '204':
+          description: User signed out
+        '401':
+          description: Unauthorized
+servers:
+- url: http://127.0.0.1:3500
+  description: Local server
+  variables:
+    defaultHost:
+      default: http://127.0.0.1:3500
