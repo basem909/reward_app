@@ -12,6 +12,15 @@ module Users
     # end
 
     # POST /resource
+
+    # @!method create
+    #   Handles user registration.
+    #   Builds and saves a new user resource with the provided sign-up parameters.
+    #   If the resource is persisted, returns the user's ID and email in JSON format with a status of :created.
+    #   Otherwise, returns validation errors in JSON format with a status of :unprocessable_entity.
+    #   @yield [resource] Yields the resource if a block is given.
+    #   @return [void]
+
     def create
       build_resource(sign_up_params)
 

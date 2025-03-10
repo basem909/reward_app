@@ -17,6 +17,14 @@ class Redemption < ApplicationRecord
     scope
   }
 
+  # Returns a formatted hash containing redemption details.
+  #
+  # @return [Hash] a hash with the following keys:
+  #   - :id [Integer] the ID of the redemption
+  #   - :user_email [String] the email of the user who made the redemption
+  #   - :reward [String] the title of the reward
+  #   - :discounted_points [Integer] the number of points deducted for the redemption
+
   def redemption_formatter
     {
       id: id,
@@ -28,6 +36,16 @@ class Redemption < ApplicationRecord
 
   private
 
+  # Validates that the user has enough points to redeem the reward.
+  #
+  # This validation only occurs during creation and ensures that the user has
+  # enough points to cover the reward's cost unless the `discounted_points`
+  # attribute is already set (indicating that points have been deducted).
+  #
+  # If the user does not have enough points, an error is added to the base.
+  #
+  # @return [void]
+
   def user_has_enough_points
     return unless user && reward
 
@@ -37,6 +55,14 @@ class Redemption < ApplicationRecord
 
     errors.add(:base, 'User does not have enough points to redeem this reward.')
   end
+
+  # Restores the user's points after redemption is destroyed.
+  #
+  # This method is an after_destroy callback that ensures the user's points
+  # are returned to their original value by adding back the points that were
+  # deducted for the redemption.
+  #
+  # @return [void]
 
   def restore_user_points
     user.update(points: user.points + discounted_points)
