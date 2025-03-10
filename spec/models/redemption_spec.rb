@@ -10,14 +10,14 @@ RSpec.describe Redemption, type: :model do
     context 'when the user does not have enough points' do
       before do
         @user = User.create!(
-          email: 'user1@example.com', 
-          password: 'password', 
-          points: 50, 
+          email: 'user1@example.com',
+          password: 'password',
+          points: 50,
           jti: SecureRandom.uuid
         )
         @reward = Reward.create!(
-          title: 'Test Reward', 
-          description: 'A sample reward', 
+          title: 'Test Reward',
+          description: 'A sample reward',
           points_cost: 100
         )
       end
@@ -35,14 +35,14 @@ RSpec.describe Redemption, type: :model do
     context 'when the user has enough points' do
       before do
         @user = User.create!(
-          email: 'user2@example.com', 
-          password: 'password', 
-          points: 150, 
+          email: 'user2@example.com',
+          password: 'password',
+          points: 150,
           jti: SecureRandom.uuid
         )
         @reward = Reward.create!(
-          title: 'Test Reward', 
-          description: 'A sample reward', 
+          title: 'Test Reward',
+          description: 'A sample reward',
           points_cost: 100
         )
       end
@@ -60,19 +60,19 @@ RSpec.describe Redemption, type: :model do
     describe 'after_destroy :restore_user_points' do
       before do
         @user = User.create!(
-          email: 'user3@example.com', 
-          password: 'password', 
-          points: 50, 
+          email: 'user3@example.com',
+          password: 'password',
+          points: 50,
           jti: SecureRandom.uuid
         )
         @reward = Reward.create!(
-          title: 'Test Reward', 
-          description: 'A sample reward', 
+          title: 'Test Reward',
+          description: 'A sample reward',
           points_cost: 30
         )
         @redemption = Redemption.create!(
-          user: @user, 
-          reward: @reward, 
+          user: @user,
+          reward: @reward,
           discounted_points: 30
         )
       end
@@ -90,25 +90,25 @@ RSpec.describe Redemption, type: :model do
     describe '.recent' do
       before do
         @user_a = User.create!(
-          email: 'user4@example.com', 
-          password: 'password', 
-          points: 200, 
+          email: 'user4@example.com',
+          password: 'password',
+          points: 200,
           jti: SecureRandom.uuid
         )
         @reward_a = Reward.create!(
-          title: 'Reward1', 
-          description: 'Desc1', 
+          title: 'Reward1',
+          description: 'Desc1',
           points_cost: 50
         )
         @redemption1 = Redemption.create!(
-          user: @user_a, 
-          reward: @reward_a, 
+          user: @user_a,
+          reward: @reward_a,
           discounted_points: 50,
           created_at: 2.days.ago
         )
         @redemption2 = Redemption.create!(
-          user: @user_a, 
-          reward: @reward_a, 
+          user: @user_a,
+          reward: @reward_a,
           discounted_points: 50,
           created_at: 1.day.ago
         )
@@ -123,31 +123,31 @@ RSpec.describe Redemption, type: :model do
     describe '.within_date_range' do
       before do
         @user_b = User.create!(
-          email: 'user5@example.com', 
-          password: 'password', 
-          points: 200, 
+          email: 'user5@example.com',
+          password: 'password',
+          points: 200,
           jti: SecureRandom.uuid
         )
         @reward_b = Reward.create!(
-          title: 'Reward2', 
-          description: 'Desc2', 
+          title: 'Reward2',
+          description: 'Desc2',
           points_cost: 50
         )
         @redemption1 = Redemption.create!(
-          user: @user_b, 
-          reward: @reward_b, 
+          user: @user_b,
+          reward: @reward_b,
           discounted_points: 50,
           created_at: '2025-03-01'
         )
         @redemption2 = Redemption.create!(
-          user: @user_b, 
-          reward: @reward_b, 
+          user: @user_b,
+          reward: @reward_b,
           discounted_points: 50,
           created_at: '2025-03-15'
         )
         @redemption3 = Redemption.create!(
-          user: @user_b, 
-          reward: @reward_b, 
+          user: @user_b,
+          reward: @reward_b,
           discounted_points: 50,
           created_at: '2025-03-31'
         )
@@ -176,19 +176,19 @@ RSpec.describe Redemption, type: :model do
   describe '#redemption_formatter' do
     before do
       @user = User.create!(
-        email: 'user6@example.com', 
-        password: 'password', 
-        points: 200, 
+        email: 'user6@example.com',
+        password: 'password',
+        points: 200,
         jti: SecureRandom.uuid
       )
       @reward = Reward.create!(
-        title: 'Formatted Reward', 
-        description: 'Test description', 
+        title: 'Formatted Reward',
+        description: 'Test description',
         points_cost: 100
       )
       @redemption = Redemption.create!(
-        user: @user, 
-        reward: @reward, 
+        user: @user,
+        reward: @reward,
         discounted_points: 100
       )
     end
