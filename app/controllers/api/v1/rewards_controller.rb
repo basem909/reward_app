@@ -1,5 +1,6 @@
 class Api::V1::RewardsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_if_admin, only: [:destroy, :create, :update]
   before_action :set_reward, only: [:update, :destroy]
 
   def index

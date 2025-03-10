@@ -1,5 +1,6 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_if_admin, only: [:update_user_points]
 
   def points
     render json: { points: current_user.points }, status: :ok
