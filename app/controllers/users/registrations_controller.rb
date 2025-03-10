@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Users
+  # Registrations Controller
   class RegistrationsController < Devise::RegistrationsController
     respond_to :json
     # before_action :configure_sign_up_params, only: [:create]
@@ -23,19 +24,10 @@ module Users
 
     def create
       build_resource(sign_up_params)
-
       resource.save
       yield resource if block_given?
-      if resource.persisted?
-        expire_data_after_sign_in! unless resource.active_for_authentication?
-        render json: { data: { id: resource.id, email: resource.email } }, status: :created
-      else
-        clean_up_passwords resource
-        set_minimum_password_length
-        render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
-      end
+      resource.persisted? ? handle_success : handle_failure
     end
-
     # GET /resource/edit
     # def edit
     #   super
@@ -59,6 +51,18 @@ module Users
     # def cancel
     #   super
     # end
+    private
+
+    def handle_success
+      expire_data_after_sign_in! unless resource.active_for_authentication?
+      render json: { data: { id: resource.id, email: resource.email } }, status: :created
+    end
+
+    def handle_failure
+      clean_up_passwords(resource)
+      set_minimum_password_length
+      render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
+    end
 
     # protected
 

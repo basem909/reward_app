@@ -1,5 +1,6 @@
 module Api
   module V1
+    # Users Controller
     class UsersController < ApplicationController
       before_action :authenticate_user!
       before_action :check_if_admin, only: [:update_user_points]
