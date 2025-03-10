@@ -1,5 +1,6 @@
 class Api::V1::RedemptionsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_if_admin, only: [:destroy]
   before_action :extract_date_params, only: [:index]
   before_action :set_reward, only: [:create]
   before_action :set_redemption, only: [:destroy]
