@@ -57,8 +57,10 @@ RSpec.describe Redemption, type: :model do
       before do
         @user_a = User.create!(email: 'user4@example.com', password: 'password', points: 200, jti: SecureRandom.uuid)
         @reward_a = Reward.create!(title: 'Reward1', description: 'Desc1', points_cost: 50)
-        @redemption1 = Redemption.create!(user: @user_a, reward: @reward_a, discounted_points: 50, created_at: 2.days.ago)
-        @redemption2 = Redemption.create!(user: @user_a, reward: @reward_a, discounted_points: 50, created_at: 1.day.ago)
+        @redemption1 = Redemption.create!(user: @user_a, reward: @reward_a, discounted_points: 50,
+                                          created_at: 2.days.ago)
+        @redemption2 = Redemption.create!(user: @user_a, reward: @reward_a, discounted_points: 50,
+                                          created_at: 1.day.ago)
       end
 
       it 'returns redemptions ordered by created_at in descending order' do
@@ -71,9 +73,12 @@ RSpec.describe Redemption, type: :model do
       before do
         @user_b = User.create!(email: 'user5@example.com', password: 'password', points: 200, jti: SecureRandom.uuid)
         @reward_b = Reward.create!(title: 'Reward2', description: 'Desc2', points_cost: 50)
-        @redemption1 = Redemption.create!(user: @user_b, reward: @reward_b, discounted_points: 50, created_at: '2025-03-01')
-        @redemption2 = Redemption.create!(user: @user_b, reward: @reward_b, discounted_points: 50, created_at: '2025-03-15')
-        @redemption3 = Redemption.create!(user: @user_b, reward: @reward_b, discounted_points: 50, created_at: '2025-03-31')
+        @redemption1 = Redemption.create!(user: @user_b, reward: @reward_b, discounted_points: 50,
+                                          created_at: '2025-03-01')
+        @redemption2 = Redemption.create!(user: @user_b, reward: @reward_b, discounted_points: 50,
+                                          created_at: '2025-03-15')
+        @redemption3 = Redemption.create!(user: @user_b, reward: @reward_b, discounted_points: 50,
+                                          created_at: '2025-03-31')
       end
 
       it 'returns redemptions within the given date range' do
@@ -106,11 +111,11 @@ RSpec.describe Redemption, type: :model do
     it 'returns a formatted hash with expected keys and values' do
       formatted = @redemption.redemption_formatter
       expect(formatted).to eq({
-        id: @redemption.id,
-        user_email: @user.email,
-        reward: @reward.title,
-        discounted_points: @redemption.discounted_points
-      })
+                                id: @redemption.id,
+                                user_email: @user.email,
+                                reward: @reward.title,
+                                discounted_points: @redemption.discounted_points
+                              })
     end
   end
 end

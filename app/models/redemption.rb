@@ -31,7 +31,9 @@ class Redemption < ApplicationRecord
   def user_has_enough_points
     return unless user && reward
 
-    return unless user.points < reward.points_cost
+    # Only validate if discounted_points is not set (i.e. zero or nil),
+    # because once points are deducted and discounted_points is set, we assume it was valid.
+    return unless (discounted_points.nil? || discounted_points.zero?) && user.points < reward.points_cost
 
     errors.add(:base, 'User does not have enough points to redeem this reward.')
   end
