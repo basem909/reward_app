@@ -4,12 +4,12 @@ class Redemption < ApplicationRecord
 
   validate :user_has_enough_points, on: :create
 
+  after_destroy :restore_user_points
+
   # Scope to include rewards and order by descending created_at.
   scope :recent, -> { includes(:reward).order(created_at: :desc) }
 
   # Scope to filter redemptions by an optional date range.
-  # If both from_date and to_date are provided, it returns records within that range.
-  # If only one is provided, it filters accordingly.
   scope :within_date_range, lambda { |from_date, to_date|
     scope = all
     scope = scope.where('created_at >= ?', from_date) if from_date.present?
@@ -34,5 +34,9 @@ class Redemption < ApplicationRecord
     return unless user.points < reward.points_cost
 
     errors.add(:base, 'User does not have enough points to redeem this reward.')
+  end
+
+  def restore_user_points
+    user.update(points: user.points + discounted_points)
   end
 end

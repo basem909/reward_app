@@ -40,8 +40,15 @@ class Api::V1::RedemptionsController < ApplicationController
   end
 
   def extract_date_params
-    @from_date = params[:from_date]
-    @to_date = params[:to_date]
+    if params[:from_date].present?
+      from_date_str = params[:from_date].gsub(/\s+/, '') # removes extra spaces, e.g. "01- 03 - 2025" -> "01-03-2025"
+      @from_date = Date.strptime(from_date_str, '%d-%m-%Y').strftime('%Y-%m-%d')
+    end
+
+    return unless params[:to_date].present?
+
+    to_date_str = params[:to_date].gsub(/\s+/, '')
+    @to_date = Date.strptime(to_date_str, '%d-%m-%Y').strftime('%Y-%m-%d')
   end
 
   def redemption_params
