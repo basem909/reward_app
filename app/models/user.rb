@@ -14,6 +14,9 @@ class User < ApplicationRecord
   has_many :redemptions, dependent: :destroy
   has_many :rewards, through: :redemptions
 
+  # Ensure points is a non-negative integer.
+  validates :points, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  
   # Enum for roles: default (0) is user and 1 is admin
   enum role: { user: 0, admin: 1 }
 
