@@ -1,4 +1,4 @@
-class RedemptionCreationService
+class CreateRedemptionService
   def initialize(user, reward)
     @user = user
     @reward = reward

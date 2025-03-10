@@ -4,6 +4,28 @@ class Redemption < ApplicationRecord
 
   validate :user_has_enough_points, on: :create
 
+  # Scope to include rewards and order by descending created_at.
+  scope :recent, -> { includes(:reward).order(created_at: :desc) }
+
+  # Scope to filter redemptions by an optional date range.
+  # If both from_date and to_date are provided, it returns records within that range.
+  # If only one is provided, it filters accordingly.
+  scope :within_date_range, lambda { |from_date, to_date|
+    scope = all
+    scope = scope.where('created_at >= ?', from_date) if from_date.present?
+    scope = scope.where('created_at <= ?', to_date) if to_date.present?
+    scope
+  }
+
+  def redemption_formatter
+    {
+      id: id,
+      user_email: user.email,
+      reward: reward.title,
+      discounted_points: discounted_points
+    }
+  end
+
   private
 
   def user_has_enough_points
