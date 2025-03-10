@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :rewards
       resources :redemptions, only: [:create, :index, :destroy]
       get 'users/me/points', to: 'users#points'
+      patch 'users/update_user_points', to: 'users#update_user_points'
     end
   end
 
