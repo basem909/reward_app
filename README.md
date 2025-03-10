@@ -1,7 +1,7 @@
 
 # Reward App
 
-A ruby on rails rewards redemption application that allows users to view available rewards, redeem them using their accumulated points, and track their redemption history. The backend is built with Ruby on Rails and MySQL, with a RESTful API interface. The application features secure authentication using Devise with JWT, containerized development with Docker, comprehensive tests using RSpec, and API documentation via Swagger.
+A ruby on rails rewards redemption application that allows users to view available rewards, redeem them using their accumulated points, and track their redemption history. The backend is built with Ruby on Rails and MySQL, with a RESTful API interface. The application features secure authentication using Devise with JWT, comprehensive tests using RSpec, and API documentation via Swagger.
 
 ---
 
@@ -27,7 +27,6 @@ A ruby on rails rewards redemption application that allows users to view availab
 - **Ruby on Rails** (API mode, version 7+)
 - **MySQL** for the backend database
 - **Devise** with **JWT** authentication
-- **Docker & Docker Compose** for containerizing the application
 - **RSpec** for automated testing
 - **RuboCop** for code style enforcement
 - **YARD** for inline documentation
@@ -43,7 +42,6 @@ Follow these instructions to set up a local copy of the project for development 
 
 - **Ruby:** Ensure you have Ruby installed on your machine. See the [official Ruby documentation](https://www.ruby-lang.org/en/documentation/installation/) for details.
 - **MySQL:** Install MySQL and configure a user with appropriate privileges. Refer to the [MySQL documentation](https://dev.mysql.com/doc/) for setup instructions.
-- **Docker & Docker Compose (optional):** For a containerized development environment.
 - **Bundler:** Install bundler if not already installed:
   ```bash
   gem install bundler
@@ -90,18 +88,6 @@ cd reward_app
    rails db:create
    rails db:migrate
    ```
-
-### Dockerized Setup (Optional)
-
-If you prefer a containerized setup, ensure Docker and Docker Compose are installed, then run:
-
-```bash
-docker-compose up --build
-```
-
-This command builds the Docker images and starts the containers for the backend (Rails) and MySQL.
-
----
 
 ## Usage
 
@@ -159,7 +145,10 @@ This will create or update your Swagger YAML file (located in the `swagger/` dir
 
 **Video Documentation:**  
 A video tutorial/documentation is planned. Once available, update the link below:
-- [Video Documentation](https://yourvideolink.com)
+- [Video Documentation Part 1](https://www.loom.com/share/c941df4650244d25adf65c3a48198ceb?sid=2c32c86f-ab7d-4f09-9dd9-249b01d4ced4)
+- [Video Documentation Part 2](https://www.loom.com/share/2c576a895e8745f3b1264b5da8c56a5a?sid=5e4c7513-e4b0-4dac-9d52-c716b81e4884)
+
+- Take in consideration that to set a user to be admin the record needs to be updated within the console on role col
 
 ---
 
