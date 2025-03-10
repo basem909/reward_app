@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Redemption model
 class Redemption < ApplicationRecord
   belongs_to :user
   belongs_to :reward

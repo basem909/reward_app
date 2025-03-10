@@ -1,3 +1,4 @@
+# Service object to create a redemption record for a user.
 class CreateRedemptionService
   # Returns a new instance of CreateRedemptionService.
   #

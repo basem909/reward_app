@@ -1,6 +1,7 @@
 require 'devise'
 require 'devise/orm/active_record'
 
+# User model
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -22,13 +23,11 @@ class User < ApplicationRecord
 
   # Returns true if the user has enough points to redeem the given reward
 
-/*************  ✨ Codeium Command ⭐  *************/
   # Determines if the user has sufficient points to redeem a specified reward.
   #
   # @param reward [Reward] The reward object to check against the user's points.
-  # @return [Boolean] Returns true if the user's points are greater than or equal to the reward's points cost, false otherwise.
+  # @return [Boolean] Returns true if the user's points are greater than or equal to the reward's points cost
 
-/******  37cf0799-7a78-4d09-9f2a-2d8baf857e6d  *******/
   def can_redeem?(reward)
     points >= reward.points_cost
   end

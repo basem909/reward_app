@@ -1,4 +1,5 @@
 module Users
+  # SessionsController
   class SessionsController < Devise::SessionsController
     # Remove or comment out any respond_to call if present:
     # respond_to :json

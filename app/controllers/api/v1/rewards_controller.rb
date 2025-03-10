@@ -1,5 +1,6 @@
 module Api
   module V1
+    # Rewards Controller
     class RewardsController < ApplicationController
       before_action :authenticate_user!
       before_action :check_if_admin, only: [:destroy, :create, :update]
